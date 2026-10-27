@@ -207,3 +207,70 @@ const yearElement = document.querySelector("#current-year");
 if (yearElement) {
   yearElement.textContent = new Date().getFullYear();
 }
+
+
+
+/* 07. CONTACT FORM — WEB3FORMS */
+
+const contactForm = document.querySelector("#contact-form");
+const contactStatus = document.querySelector("#contact-form-status");
+const contactSubmitText = document.querySelector(".contact-submit-text");
+const contactSubmitButton = contactForm?.querySelector(
+  'button[type="submit"]'
+);
+
+contactForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!contactForm.reportValidity()) return;
+
+  const originalButtonText = "Send Message";
+
+  contactSubmitButton.disabled = true;
+
+  if (contactSubmitText) {
+    contactSubmitText.textContent = "Sending...";
+  }
+
+  if (contactStatus) {
+    contactStatus.textContent = "Sending your message...";
+  }
+
+  try {
+    const formData = new FormData(contactForm);
+
+    const response = await fetch(contactForm.action, {
+      method: "POST",
+      body: formData,
+      headers: {
+        Accept: "application/json"
+      }
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Message submission failed.");
+    }
+
+    contactForm.reset();
+
+    if (contactStatus) {
+      contactStatus.textContent =
+        "Message sent successfully! Thank you for reaching out.";
+    }
+  } catch (error) {
+    console.error("Contact form error:", error);
+
+    if (contactStatus) {
+      contactStatus.textContent =
+        "Your message couldn't be sent. Please try again or email me directly at johndanielemmanuel@gmail.com.";
+    }
+  } finally {
+    contactSubmitButton.disabled = false;
+
+    if (contactSubmitText) {
+      contactSubmitText.textContent = originalButtonText;
+    }
+  }
+});
