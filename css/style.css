@@ -2455,3 +2455,24 @@ svg {
 }
 
 
+/* Mobile contact form spacing fix */
+@media (max-width: 600px) {
+  .contact-form {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .contact-form,
+  .contact-form input,
+  .contact-form textarea,
+  .contact-form button {
+    box-sizing: border-box;
+  }
+
+  .contact-form {
+    padding: 0 16px;
+  }
+}
+
+
